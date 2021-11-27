@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Keykes Admin Dashboard</title>
+
+    <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <link href="css/bootstrap.css?v=1.1" rel="stylesheet" type="text/css" />
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="fonts/material-icon/css/round.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+      integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+      integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- custom style -->
+    <link href="css/ui.css?v=1.1" rel="stylesheet" type="text/css" />
+    <link href="css/responsive.css?v=1.1" rel="stylesheet" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script
+      type="application/javascript"
+      src="https://server/cookies.js"
+    ></script>
+    <script>
+      function handleLogout() {
+        localStorage.removeItem("token");
+      }
+
+
+      function searchOrderId(){
+     var orderId = document.getElementById("searchvalue").value;
+        var anchor = document.getElementById("search_item")
+        anchor.href = `#${orderId}`
+       var data = document.getElementById(orderId)
+       data.style.color = 'red'
+       setTimeout(() => {
+       data.style.color="black"
+       }, 3000);
+      
+      }
+
+    
+
+      function mapToTable(dataArray) {
+let data = '<details>';
+
+        dataArray.forEach((elem)=>{
+          data= data + `
+          
+      <b> <span>Product Name</span></b>
+        ${elem.productName}<br>
+        <b> <span>Coupon Code</span></b><br>
+        ${elem.coupon.code ? elem.coupon.code : "Out of Stock"}<br>
+      
+       `
+        })
+
+
+        return  data + " </details>";
+       
+        
+      }
+
+
+      function mapToDetails(data) {
+        var notDeliveredDetails = '<details';
+        data.forEach((elem)=>{
+          notDeliveredDetails = notDeliveredDetails + `
+          <b> <span> ProductName </span></b>
+            ${elem.productName}<br>
+         <b> <span> Status </span></b>
+          ${elem.coupon}<br>
+          `
+           })
+
+           return notDeliveredDetails + "</details>"
+        
+      }
+
+
+      function handleRequest() {
+       
+var type = "Stripe"
+        axios
+          .post("https://www.keykes.com/api/transcations/fetch/all",{type:type},{
+            headers: {
+              "x-access-token": localStorage.getItem("token"),
+            },
+          })
+          .then(function (response) {
+         
+            const products = response.data.data;
+         
+            var article = document.querySelector("tbody");
+            for (let i = 0; i < products.length; i++) {
+           
+           let price = parseFloat((products[i].transcations[0].session.amount_total)/100)
+           let discount = products[i].transcations[0].session.total_details.amount_discount
+           let couponDetails = products[i].couponDetails
+      
+//            let timeStamp_value = products[i].purchasedAt
+//            var theDate = new Date(timeStamp_value * 1000);
+// dateString = theDate.toGMTString();
+const data = mapToTable(couponDetails);
+
+var notDeliveredDetails = products[i].notDeliveredProduct;
+const notDelivered = mapToDetails(notDeliveredDetails) 
+
+
+              var content = `
+   <tr>
+
+
+    <td id="${products[i].transcations[0].session.customer}">${products[i].transcations[0].session.customer}</td>
+                                <td> ${products[i].buyerUserId}</td>
+                               
+                               
+
+                                <td>${price}</td>
+
+                                <td>${products[i].updatedAt}</td>
+                             <td>
+                              ${data}
+                             </td>
+                             <td>
+                              ${notDelivered}
+                             </td>
+                             <td>${discount}</td>
+ 
+                            </tr>
+`;
+              article.innerHTML += content;
+            }
+          });
+      }
+    </script>
+  </head>
+  <body onload="handleRequest()">
+    <b class="screen-overlay"></b>
+
+    <aside class="navbar-aside" id="offcanvas_aside">
+      <div class="aside-top">
+        <a href="page-index-1.html" class="brand-wrap">
+          <img
+            src="images/logo.svg"
+            height="46"
+            class="logo"
+            alt="Ecommerce dashboard template"
+          />
+        </a>
+        <div>
+          <button class="btn btn-icon btn-aside-minimize">
+            <i class="text-muted material-icons md-menu_open"></i>
+          </button>
+        </div>
+      </div>
+      <!-- aside-top.// -->
+
+      <nav>
+        <ul class="menu-aside">
+          <li class="menu-item active">
+            <a class="menu-link" href="page-index-1.html">
+              <i class="icon material-icons md-home"></i>
+              <span class="text">Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="page-products-list.html">
+              <i class="icon material-icons md-shopping_bag"></i>
+              <span class="text">Products</span>
+            </a>
+            <div class="submenu">
+              <a href="page-products-list.html">Product list view</a>
+              <!-- <a href="page-products-table.html">Product table view</a>
+        <a href="page-products-grid.html">Product grid</a>
+        <a href="page-products-grid-2.html">Product grid 2</a> -->
+            </div>
+          </li>
+
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="page-form-product-1.html">
+              <i class="icon material-icons md-add_box"></i>
+              <span class="text">Add product</span>
+            </a>
+            <div class="submenu">
+              <a href="page-form-product-1.html">Add product 1</a>
+              <!-- <a href="page-form-product-2.html">Add product 2</a>
+        <a href="page-form-product-3.html">Add product 3</a>
+        <a href="page-form-product-4.html">Add product 4</a>   -->
+            </div>
+          </li>
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="page-transactions-A.html">
+              <i class="icon material-icons md-monetization_on"></i>
+              <span class="text">Transactions</span>
+            </a>
+            <div class="submenu">
+              <a href="page-transactions-A.html"> Stripe Transaction </a>
+              <a href="page-transactions-B.html">Paypal Transaction</a>
+              <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
+            </div>
+            
+          </li>
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
+              <span class="text">Discount</span> 
+            </a> 
+            <div class="submenu">
+              <a href="discount.html">Discount 1</a>
+           
+            </div>
+          </li>
+          <li class="menu-item has-submenu">
+            <a class="menu-link" href="#">
+              <i class="icon material-icons md-person"></i>
+              <span class="text">Tickets</span>
+            </a>
+            <div class="submenu">
+              <a href="ticket.html">Tickets</a>
+            </div>
+          </li>
+        </ul>
+        <br />
+        <br />
+      </nav>
+    </aside>
+
+    <main class="main-wrap">
+      <header class="main-header navbar">
+   
+          <p style="color: rgb(36, 46, 180)"><b>Enter Order ID:</b></p>
+          <input type="text" id="searchvalue" class="textbox1"  size="50" maxlength="120">
+          <input type="button" class="button1" value=">" onclick="searchOrderId()" style="color: blue;">
+      
+      <a id="search_item" href="" style="color:blue">
+        
+Mark OrderID:
+      </a>
+			
+		</div> -->
+        <div class="col-nav">
+          <button
+            class="btn btn-icon btn-mobile me-auto"
+            data-trigger="#offcanvas_aside"
+          >
+            <i class="md-28 material-icons md-menu"></i>
+          </button>
+          <ul class="nav" style="margin-left: 55vw">
+            <li class="nav-item">
+              <a
+                class="nav-link btn-icon"
+                onclick="darkmode(this)"
+                title="Dark mode"
+                href="#"
+              >
+                <i class="material-icons md-nights_stay"></i>
+              </a>
+            </li>
+
+           
+
+            <li class="nav-item">
+              <a class="nav-link" href="#"> English </a>
+            </li>
+            <li class="dropdown nav-item">
+              <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                <img
+                  class="img-xs rounded-circle"
+                  src="images/people/avatar1.jpg"
+                  alt="User"
+              /></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a
+                  class="dropdown-item text-danger"
+                  href="index.html"
+                  onclick="handleLogout()"
+                  >Logout</a
+                >
+              </div>
+            </li>
+          </ul>
+
+
+        </div>
+      </header>
+
+      <section class="content-main">
+        <div class="content-header">
+          <h2 class="content-title">Transactions</h2>
+          <div class="icontext">
+            <img width="36" class="icon border" src="images/card-brands/5.png" alt="stripe">
+            <span class="text text-muted">Stripe</span>
+        </div>
+        </div>
+
+      
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>orderId:</th>
+                        <th>Mail</th>
+                   
+                        <th>Amount</th>
+                        <th>Date and Time</th>
+                        <th>Details</th>
+                        <th>Not Delivered</th>
+                        <th>Discount amount</th>
+                        
+                     </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+            
+
+        </div>
+        <!-- card end// -->
+      </section>
+      <!-- content-main end// -->
+    </main>
+
+    <script type="text/javascript">
+      if (localStorage.getItem("darkmode")) {
+        var body_el = document.body;
+        body_el.className += "dark";
+      }
+    </script>
+
+    <script src="js/jquery-3.5.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/script.js?v=1.0" type="text/javascript"></script>
+  </body>
+</html>

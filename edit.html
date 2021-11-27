@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<head>
+
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Keykes Admin Dashboard</title>
+
+	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+	<link href="css/bootstrap.css?v=1.1" rel="stylesheet" type="text/css"/>
+
+	<link rel="stylesheet" href="fonts/material-icon/css/round.css"/>
+
+	<!-- custom style -->
+	<link href="css/ui.css?v=1.1" rel="stylesheet" type="text/css"/>
+  <link href="css/responsive.css?v=1.1" rel="stylesheet" />
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+    <script src=
+    "https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" 
+                    integrity=
+    "sha512-VZ6m0F78+yo3sbu48gElK4irv2dzPoep8oo9LEjxviigcnnnNvnTOJRSrIhuFk68FMLOpiNz+T77nNY89rnWDg==" 
+                    crossorigin="anonymous"></script>
+
+              <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+              
+              <script src='https://cdn.tiny.cloud/1/8owlqko5er6pjcsjhek2p8zsfd6q41cdi5iz31q6mz8zyyg3/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+              </script>
+              <script>
+                tinymce.init({
+                  selector: '#mytextarea'
+                });
+              </script>
+ 
+
+  <script>
+        function handleLogout(){
+		  localStorage.removeItem("token")
+	  }
+
+  </script>
+
+  <script>
+    function handleRequest(){
+      const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
+
+
+
+    axios.get(`https://www.keykes.com/api/products/product/${params.id}`,)
+    .then (function(response) {
+       var product = response.data.data;
+       
+     
+       document.getElementById("productName").value = product.productName
+      
+       var x = document.createElement("IMG");
+x.setAttribute("src", `${product.image}`);
+x.setAttribute("width", "304");
+x.setAttribute("height", "228");
+x.setAttribute("alt", "This is image section");
+document.getElementById("img").appendChild(x);
+       document.getElementById("productPrice").value = product.price.productPrice 
+       document.getElementById("tag").value = product.tag
+       document.getElementById("description").value = product.description
+       document.getElementById("mytextarea").value = product.longDescription
+     
+       if(product.isPromoted)
+       document.querySelector(".isPromoted").checked = true
+
+       localStorage.setItem("discription", product.longDescription);
+    })
+    }
+
+    
+</script>
+
+
+<script type="text/javascript">
+    window.addEventListener("load", () => {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
+let data = new FormData(form); 
+var picture = document.getElementById("image").value
+var details = document.getElementById("mytextarea").value
+var descrip = localStorage.getItem("discription");
+details?data.append("longDescription",details):data.append("longDescription",descrip)
+picture?data.append("isImageChanged",1):data.append("isImageChanged","")
+var url = `https://www.keykes.com/api/products/edit/${params.id}`
+
+            axios({
+                method: "post",
+                url: url,
+                data: data,
+                headers: { "Content-Type": "multipart/form-data",
+                'x-access-token': localStorage.getItem('token')
+                 },
+            })
+                .then((res) => {
+                    location.reload();
+                })
+                .catch((err) => {
+                 alert("please select the image")
+                });
+        });
+    });
+</script>
+
+<body  onload="handleRequest()">
+
+
+    <b class="screen-overlay"></b>
+
+<aside class="navbar-aside" id="offcanvas_aside">
+<div class="aside-top">
+  <a href="page-index-1.html" class="brand-wrap">
+    <img src="images/logo.svg" height="46" class="logo" alt="Ecommerce dashboard template">
+  </a>
+  <div>
+    <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+  </div>
+</div> <!-- aside-top.// -->
+
+<nav>
+  <ul class="menu-aside">
+    <li class="menu-item active"> 
+      <a class="menu-link" href="page-index-1.html"> <i class="icon material-icons md-home"></i> 
+        <span class="text">Dashboard</span> 
+      </a> 
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>  
+        <span class="text">Products</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-products-list.html">Product list view</a>
+   
+      
+      </div>
+    </li>
+    
+    <li class="menu-item has-submenu"> 
+      
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>  
+        <span class="text">Add product</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-form-product-1.html">Add product 1</a>
+ 
+      </div>
+    </li>
+    <li class="menu-item has-submenu">
+      <a class="menu-link" href="page-transactions-A.html"> <i class="icon material-icons md-monetization_on"></i> 
+        <span class="text">Transactions</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-transactions-A.html">Stripe Transaction</a>
+        <a href="page-transactions-B.html">Paypal Transaction</a>
+        <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
+      </div>
+      
+    </li>
+    <li class="menu-item has-submenu">
+      <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
+        <span class="text">Discount</span> 
+      </a> 
+      <div class="submenu">
+        <a href="discount.html">Discount 1</a>
+        <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
+      </div>
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>  
+        <span class="text">Tickets</span> 
+      </a> 
+      <div class="submenu">
+        <a href="ticket.html">Tickets</a>
+      </div>
+      </li>
+   
+    </li>
+  </ul>
+  <hr>
+  
+  <br>
+  <br>
+</nav>
+</aside>
+
+<main class="main-wrap">
+
+<header class="main-header navbar">
+	<div class="col-search">
+
+
+	</div>
+	<div class="col-nav">
+     <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="md-28 material-icons md-menu"></i> </button>
+	 	<ul class="nav">
+	      <li class="nav-item">
+	          <a class="nav-link btn-icon" onclick="darkmode(this)" title="Dark mode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link btn-icon" href="#"> <i class="material-icons md-notifications_active"></i> </a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#"> English </a>
+	      </li>
+	      <li class="dropdown nav-item">
+	        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"> <img class="img-xs rounded-circle" src="images/people/avatar1.jpg" alt="User"></a>
+	        <div class="dropdown-menu dropdown-menu-end">
+	          <a class="dropdown-item" href="#">My profile</a>
+	          <a class="dropdown-item" href="#">Settings</a>
+	          <a class="dropdown-item text-danger" href="index.html" onclick=handleLogout()>Logout</a>
+	        </div>
+	      </li>
+	    </ul> 
+  	</div>
+</header>
+
+<section class="content-main" style="max-width: 720px">
+	
+	<div class="content-header">
+		<h2 class="content-title">Edit product </h2>
+		<div>
+			<a href="page-products-list.html" class="btn btn-outline-danger"> &times; Discard</a>
+		</div>
+	</div>
+
+	<div class="card mb-4">
+          <div class="card-body">
+
+    <form  enctype="multipart/form-data" >
+        <div class="mb-4">
+            <label for="product_name" class="form-label">Product name</label>
+            <input type="text"  placeholder="Type here" class="form-control" id="productName" name="productName" required>
+        </div>
+ 
+        <div id="img">
+          
+       </div>
+
+
+            <div class="mb-4">
+              <label class="form-label">Image</label>       
+            <input  type="file" id="image" name="image">
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Price</label>
+            <div class="row gx-2">
+                <div class="col-4">
+                    <input placeholder="it should be number" type="number" step="0.01"class="form-control" name="productPrice" id="productPrice" required>
+                  </div>
+        
+        </div>
+
+        <div class="mb-4">
+            <label for="product_name" class="form-label">Tags</label>
+            <input type="text" class="form-control" name="tag" id="tag" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Description</label>
+            <textarea placeholder="Type here" class="form-control" rows="4" name="description" class="description" id="description"></textarea>
+</div>
+
+<div class="mb-4">
+            <label class="form-label">Full Description</label>
+            <textarea placeholder="Type here" class="form-control" rows="4" id="mytextarea" class="longDescription"></textarea>
+        </div>
+
+
+        </div>
+
+        
+    
+
+
+             
+        </div> <!-- row.// -->
+
+      <label class="form-check mb-4">
+          <input class="isPromoted" type="checkbox" name="isPromoted" id="isPromoted">
+          <span class="form-check-label">  Feature </span>
+        </label>
+
+        <button class="btn btn-primary" type="submit" value="submit item" >submit </button>
+
+     
+    </form>
+
+</div>
+</div> <!-- card end// -->
+
+
+</section> <!-- content-main end// -->
+</main>
+
+<script>
+if(localStorage.getItem("darkmode")){
+    var body_el = document.body;
+    body_el.className += 'dark';
+}
+</script>
+
+<script src="js/jquery-3.5.0.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/script.js?v=1.0"></script>
+
+
+</body>
+
+
+</html>

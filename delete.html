@@ -1,0 +1,239 @@
+<html>
+    <head><title> Keykes Admin Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+	<link href="css/bootstrap.css?v=1.1" rel="stylesheet" type="text/css"/>
+
+  <link rel="stylesheet" href="fonts/material-icon/css/round.css"/>
+  
+  	<!-- custom style -->
+	<link href="css/ui.css?v=1.1" rel="stylesheet" type="text/css"/>
+	<link href="css/responsive.css?v=1.1" rel="stylesheet" />
+<!------ Include the above in your HEAD tag ---------->
+
+<style>
+  body{
+    
+    text-align: center;
+    justify-content: center;
+
+  }
+  .custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+
+</style>
+  
+  </head>
+
+
+<script>
+  function handleRequest() {
+    
+    const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+  axios.get(`https://www.keykes.com/api/products/product/${params.id}`,)
+    .then (function(response) {
+      var product = response.data.data;
+      var article= document.querySelector("tbody")
+      var content = `
+                   <tr>
+                    <td>1</td>
+                    <td>Product Name:</td>
+                    <td>${product.productName}</td>
+               
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Product Price:</td>
+                    <td>${product.price.productPrice}</td>
+               
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Tag:</td>
+                    <td>${product.tag}</td>
+               
+                </tr>
+
+
+
+                <tr>
+                    <td>1</td>
+                    <td>Featured?</td>
+                    <td>${product.isPromoted}</td>
+               
+                </tr>
+
+      `
+
+      article.innerHTML += content;
+
+   
+      
+       var x = document.createElement("IMG");
+      x.setAttribute("src", `${product.image}`);
+      x.setAttribute("width", "100");
+     x.setAttribute("height", "100");
+     x.setAttribute("alt", "This is image section");
+    document.getElementById("img").appendChild(x);
+    
+ 
+
+     
+     
+      product.longDescription;
+    })
+    }
+
+</script>
+
+
+    <body onload="handleRequest()">
+
+      <b class="screen-overlay"></b>
+
+<aside class="navbar-aside" id="offcanvas_aside">
+<div class="aside-top">
+  <a href="page-index-1.html" class="brand-wrap">
+    <img src="images/logo.svg" height="46" class="logo" alt="Ecommerce dashboard template">
+  </a>
+  <div>
+    <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+  </div>
+</div> <!-- aside-top.// -->
+
+<nav>
+  <ul class="menu-aside">
+    <li class="menu-item active"> 
+      <a class="menu-link" href="page-index-1.html"> <i class="icon material-icons md-home"></i> 
+        <span class="text">Dashboard</span> 
+      </a> 
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>  
+        <span class="text">Products</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-products-list.html">Product list view</a>
+      
+      
+      </div>
+    </li>
+   
+    <li class="menu-item has-submenu"> 
+      
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>  
+        <span class="text">Add product</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-form-product-1.html">Add product 1</a>
+        <!-- <a href="page-form-product-2.html">Add product 2</a>
+        <a href="page-form-product-3.html">Add product 3</a>
+        <a href="page-form-product-4.html">Add product 4</a>   -->
+      </div>
+    </li>
+    <li class="menu-item has-submenu">
+      <a class="menu-link" href="page-transactions-A.html"> <i class="icon material-icons md-monetization_on"></i> 
+        <span class="text">Transactions</span> 
+      </a> 
+      <div class="submenu">
+        <a href="page-transactions-A.html">Stripe Transaction</a>
+        <a href="page-transactions-B.html">Paypal Transaction</a>
+        <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
+      </div>
+      
+    </li>
+    <li class="menu-item has-submenu">
+      <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
+        <span class="text">Discount</span> 
+      </a> 
+      <div class="submenu">
+        <a href="discount.html">Discount 1</a>
+        <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
+      </div>
+    </li>
+    <li class="menu-item has-submenu"> 
+      <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>  
+        <span class="text">Tickets</span> 
+      </a> 
+      <div class="submenu">
+        <a href="ticket.html">Tickets</a>
+      </div>
+      </li>
+  
+  </ul>
+  <br>
+  <br>
+</nav>
+</aside>
+
+<p >ARE YOU SURE?</p>
+<button class="btn btn-primary" onclick="deleteProduct()" >YES</button> </a>
+<a href="page-products-list.html">  <button class="btn btn-primary"  >No</button> 
+
+</a>
+
+      <div id="img" class="mt-3">
+      </div>
+        <div class="container ">
+         
+          <table class="table  table-dark custab d-flex justify-content-center ">
+          <thead>
+        
+         
+          </thead>
+          <tbody >
+            <tr >
+              <th>ID</th>
+              <th>Title</th>
+              <th>Details</th>
+            
+          </tr>
+  
+                </tbody>
+          </table>
+          </div>
+    
+     
+
+
+  
+
+   
+       
+    </body>
+    <script>
+
+
+
+         function deleteProduct() {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+ 
+      axios.delete(`https://www.keykes.com/api/products/delete/${params.id}`,{
+        headers:{
+          'x-access-token': localStorage.getItem('token')
+        }
+      }).then(function (response) {
+   
+        window.location.replace('page-products-list.html');
+      })
+      
+    }
+    </script>
+
+</html>

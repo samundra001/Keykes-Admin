@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Keykes Admin Dashboard</title>
+    <link rel="stylesheet" href="loginstyle.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      if (localStorage.getItem("token")) {
+        window.location.replace("./page-index-1.html");
+      }
+
+      function handleSubmit() {
+        const username = document.getElementById("login-name").value;
+        const password = document.getElementById("login-pass").value;
+        if (!username || !password) {
+          alert("Username and password is required!");
+        } else {
+          const url = "https://www.keykes.com/api/users/login";
+          axios
+            .post(url, { email: username, password: password })
+            .then((result) => {
+             
+              if (!result.data.token) {
+                alert("Invalid Credentials");
+              }
+              if (result.data.role) {
+                localStorage.setItem("token", result.data.token);
+                window.location.replace("./page-index-1.html");
+              } else {
+                alert("You are not admin");
+              }
+            });
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="login">
+      <div class="login-screen">
+        <div class="app-title">
+          <h1>Admin Login</h1>
+        </div>
+
+        <div class="login-form">
+          <div class="control-group">
+            <input
+              type="text"
+              class="login-field"
+              placeholder="username"
+              id="login-name"
+            />
+            <label class="login-field-icon fui-user" for="login-name"></label>
+          </div>
+
+          <div class="control-group">
+            <input
+              type="password"
+              class="login-field"
+              placeholder="password"
+              id="login-pass"
+            />
+            <label class="login-field-icon fui-lock" for="login-pass"></label>
+          </div>
+
+          <a
+            class="btn btn-primary btn-large btn-block"
+            onclick="handleSubmit()"
+            >login</a
+          >
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery-3.5.0.min.js"></script>
+  </body>
+</html>

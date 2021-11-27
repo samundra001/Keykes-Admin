@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Keykes Admin Dashboard</title>
+
+	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+    <link href="css/bootstrap.css?v=1.1" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-3.5.0.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/script.js?v=1.0"></script>
+
+	<link rel="stylesheet" href="fonts/material-icon/css/round.css"/>
+
+	<!-- custom style -->
+	<link href="css/ui.css?v=1.1" rel="stylesheet" type="text/css"/>
+    <link href="css/responsive.css?v=1.1" rel="stylesheet" />
+    
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+     
+$( document ).ready(function() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
+if(!params.tag  && !params.id){
+    alert("There must be id and tag in query")
+    window.location.href = "page-index-1.html";
+}
+
+});
+  </script>
+
+  <script>
+     function handleSubmit() {
+
+         var coupon = document.getElementById("coupons").value
+    
+         const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
+ 
+
+    axios.put(`https://www.keykes.com/api/coupons/add/coupon/${params.id}`, {tag: params.tag ,code:coupon},{   headers:{
+          'x-access-token': localStorage.getItem('token')}}).then(function (response) {
+     
+
+      alert("coupon added successfully :)");
+      window.location.href = "./page-products-list.html";
+    })
+   
+
+
+
+
+         
+     }
+       
+  </script>
+
+</head>
+<body>
+
+<b class="screen-overlay"></b>
+
+<aside class="navbar-aside" id="offcanvas_aside">
+<div class="aside-top">
+  <a href="page-index-1.html" class="brand-wrap">
+    <img src="images/logo.svg" height="46" class="logo" alt="Ecommerce dashboard template">
+  </a>
+  <div>
+    <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+  </div>
+</div> <!-- aside-top.// -->
+
+
+</aside>
+
+<main class="main-wrap">
+
+
+
+<section class="content-main" style="max-width: 720px">
+	
+	<div class="content-header">
+		<h2 class="content-title">Add coupon </h2>
+		<div>
+			<a href="page-products-list.html" class="btn btn-outline-danger"> &times; Discard</a>
+		</div>
+	</div>
+
+	<div class="card mb-4">
+          <div class="card-body">
+			
+				<div class="mb-4">
+					<label for="product_name" class="form-label">coupon code </label>
+					<input type="text"  placeholder="Type here" class="form-control" id="coupons" name="coupons">
+				</div>
+
+			
+
+				
+				</div>
+
+
+	
+					 
+				</div> <!-- row.// -->
+
+
+				
+
+	
+
+				<button class="btn btn-primary" onclick="handleSubmit()">Submit item</button>
+
+		
+          </div>
+    </div> <!-- card end// -->
+
+
+</section> <!-- content-main end// -->
+</main>
+
+<script>
+    if(localStorage.getItem("darkmode")){
+        var body_el = document.body;
+        body_el.className += 'dark';
+    }
+</script>
+
+
+
+</body>
+</html>
