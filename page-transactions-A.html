@@ -103,7 +103,7 @@ let data = '<details>';
        
 var type = "Stripe"
         axios
-          .post("https://www.keykes.com/api/transcations/fetch/all",{type:type},{
+          .get("https://www.keykes.com/api/transcations/fetch/all?type=Stripe",{
             headers: {
               "x-access-token": localStorage.getItem("token"),
             },
