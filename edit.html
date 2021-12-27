@@ -33,6 +33,14 @@
                 tinymce.init({
                   selector: '#mytextarea'
                 });
+               
+              </script>
+
+              <script>
+                 tinymce.init({
+                  selector: '#description'
+                });
+                
               </script>
  
 
@@ -73,6 +81,7 @@ document.getElementById("img").appendChild(x);
        document.querySelector(".isPromoted").checked = true
 
        localStorage.setItem("discription", product.longDescription);
+       localStorage.setItem("shortDescription",product.description)
     })
     }
 
@@ -92,7 +101,13 @@ let data = new FormData(form);
 var picture = document.getElementById("image").value
 var details = document.getElementById("mytextarea").value
 var descrip = localStorage.getItem("discription");
+
+var shortDetails = document.getElementById("description").value
+var shortDescrip = localStorage.getItem("shortDescription")
+
+shortDetails?data.append("description",shortDetails):data.append("description",shortDescrip)
 details?data.append("longDescription",details):data.append("longDescription",descrip)
+
 picture?data.append("isImageChanged",1):data.append("isImageChanged","")
 var url = `https://www.keykes.com/api/products/edit/${params.id}`
 
@@ -272,7 +287,7 @@ var url = `https://www.keykes.com/api/products/edit/${params.id}`
 
         <div class="mb-4">
             <label class="form-label">Description</label>
-            <textarea placeholder="Type here" class="form-control" rows="4" name="description" class="description" id="description"></textarea>
+            <textarea placeholder="Type here" class="form-control" rows="4"  class="description" id="description"></textarea>
 </div>
 
 <div class="mb-4">
