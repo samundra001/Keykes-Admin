@@ -29,6 +29,11 @@
                       selector: '#mytextarea'
                     });
                   </script>
+                         <script>
+                          tinymce.init({
+                            selector: '#description'
+                          });
+                        </script>
 
     
 
@@ -217,7 +222,7 @@ var url = `https://www.keykes.com/api/products/create`
 
 				<div class="mb-4">
 					<label class="form-label">Description</label>
-					<textarea placeholder="Type here" class="form-control" rows="4" name="description" class="description"></textarea>
+					<textarea placeholder="Type here" class="form-control" rows="4" name="description" class="description" id="description"></textarea>
         </div>
         
         <div class="mb-4">
