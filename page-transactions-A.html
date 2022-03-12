@@ -100,6 +100,11 @@ let data = '<details>';
 
 
       function handleRequest() {
+        var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
+    
        
 var type = "Stripe"
         axios
@@ -153,6 +158,7 @@ const notDelivered = mapToDetails(notDeliveredDetails)
               article.innerHTML += content;
             }
           });
+      }
       }
     </script>
   </head>

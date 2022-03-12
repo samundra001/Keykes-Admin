@@ -24,7 +24,6 @@
 
     <script type="text/javascript">
       function handlePop(id, tag) {
-      
         localStorage.setItem("id", id);
       }
       function handleLogout() {
@@ -32,20 +31,21 @@
       }
 
       function handleRequest() {
-        axios
-          .get("https://www.keykes.com/api/ticket/fetch/open/tickets", {
-            headers: {
-              "x-access-token": localStorage.getItem("token"),
-            },
-          })
-          .then(function (response) {
-   
-            const products = response.data.data;
-            var article = document.querySelector("tbody");
-            for (let i = 0; i < products.length; i++) {
-      
-
-              var content = `
+        var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
+          axios
+            .get("https://www.keykes.com/api/ticket/fetch/open/tickets", {
+              headers: {
+                "x-access-token": localStorage.getItem("token"),
+              },
+            })
+            .then(function (response) {
+              const products = response.data.data;
+              var article = document.querySelector("tbody");
+              for (let i = 0; i < products.length; i++) {
+                var content = `
           
           <tr>
             <th scope="row">${products[i].updatedAt}</th>
@@ -58,17 +58,18 @@
            <a href="singleTicket.html?id=${
              products[i]._id
            }"  <button id="id" type="button" class="btn-btn-bg-blue" value=${
-                products[i]._id
-              } onclick = "handleStatus()" > Detail </button> </td>
+                  products[i]._id
+                } onclick = "handleStatus()" > Detail </button> </td>
 
            
 
           </tr>
    
    `;
-              article.innerHTML += content;
-            }
-          });
+                article.innerHTML += content;
+              }
+            });
+        }
       }
 
       function handleStatus() {
@@ -142,12 +143,12 @@
               <a href="page-transactions-B.html">Paypal Transaction</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
             </div>
-            
           </li>
           <li class="menu-item has-submenu">
-            <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
-              <span class="text">Discount</span> 
-            </a> 
+            <a class="menu-link" href="discount.html">
+              <i class="icon material-icons md-monetization_on"></i>
+              <span class="text">Discount</span>
+            </a>
             <div class="submenu">
               <a href="discount.html">Discount 1</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
@@ -203,7 +204,6 @@
 
     <main class="main-wrap">
       <header class="main-header navbar">
-  
         <div class="col-nav">
           <button
             class="btn btn-icon btn-mobile me-auto"

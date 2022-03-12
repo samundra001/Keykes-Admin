@@ -32,7 +32,12 @@
       }
 
       function handleRequest() {
-        axios
+        var token = localStorage.getItem("token");
+         if(!token ){
+           window.location.replace("https://keykesadmin.netlify.app/index.html");
+         }
+       else{
+   axios
           .get(
             "https://www.keykes.com/api/products/fetch/all",
             { name: "data" },
@@ -107,8 +112,11 @@
    `;
               article.innerHTML += content;
             }
+          
           });
+       }
       }
+      
 
       function deleteProduct(id) {
         axios

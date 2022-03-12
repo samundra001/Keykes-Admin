@@ -38,6 +38,10 @@
 
 <script>
   function handleRequest() {
+    var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
     
     const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
@@ -96,7 +100,7 @@ const params = Object.fromEntries(urlSearchParams.entries());
       product.longDescription;
     })
     }
-
+  }
 </script>
 
 

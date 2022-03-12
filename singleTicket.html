@@ -28,37 +28,42 @@
       }
 
       function handlePop(id, tag) {
-
         localStorage.setItem("id", id);
       }
       function handleStatusChange() {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
-      
+
         const url = `https://www.keykes.com/api/ticket/change/ticket/status/${params.id}`;
         const status = 2;
         axios.put(url, { status }).then((response) => {
-    
           window.location.reload();
         });
       }
 
       function handleRequest() {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
+        var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
+          const urlSearchParams = new URLSearchParams(window.location.search);
+          const params = Object.fromEntries(urlSearchParams.entries());
 
-        axios
-          .get(`https://www.keykes.com/api/ticket/fetch/ticket/${params.id}`, {
-            headers: {
-              "x-access-token": localStorage.getItem("token"),
-            },
-          })
-          .then(function (response) {
-            const products = response.data.result;
-     
-            var article = document.querySelector("tbody");
+          axios
+            .get(
+              `https://www.keykes.com/api/ticket/fetch/ticket/${params.id}`,
+              {
+                headers: {
+                  "x-access-token": localStorage.getItem("token"),
+                },
+              }
+            )
+            .then(function (response) {
+              const products = response.data.result;
 
-            var content = `
+              var article = document.querySelector("tbody");
+
+              var content = `
        
         
           <h3> Updted At </h3> <p>${products.updatedAt}<br></p>
@@ -75,13 +80,13 @@
         <button class="btn btn-danger text-black mx-3" style="color:black" onclick="handleStatusChange()">Change Status</button>
    
    `;
-            article.innerHTML += content;
-          });
+              article.innerHTML += content;
+            });
+        }
       }
 
       function handleStatus() {
         var id = document.getElementById("id").value;
- 
       }
     </script>
   </head>
@@ -150,12 +155,12 @@
               <a href="page-transactions-B.html">Paypal Transaction</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
             </div>
-            
           </li>
           <li class="menu-item has-submenu">
-            <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
-              <span class="text">Discount</span> 
-            </a> 
+            <a class="menu-link" href="discount.html">
+              <i class="icon material-icons md-monetization_on"></i>
+              <span class="text">Discount</span>
+            </a>
             <div class="submenu">
               <a href="discount.html">Discount 1</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->

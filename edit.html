@@ -53,6 +53,12 @@
 
   <script>
     function handleRequest(){
+
+      var token = localStorage.getItem("token");
+      if(!token ){
+        window.location.replace("https://keykesadmin.netlify.app/index.html");
+      }else{
+    
       const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
@@ -83,6 +89,7 @@ document.getElementById("img").appendChild(x);
        localStorage.setItem("discription", product.longDescription);
        localStorage.setItem("shortDescription",product.description)
     })
+    }
     }
 
     

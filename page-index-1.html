@@ -27,41 +27,44 @@
       }
 
       function handleRequest() {
-        axios
-          .get(
-            "https://www.keykes.com/api/transcations/fetch/coupon/not-delivered",
-            {
-              headers: {
-                "x-access-token": localStorage.getItem("token"),
-              },
-            }
-          )
-          .then(function (response) {
-            console.log(response);
-            const products = response.data.data;
-            var article = document.querySelector("tbody");
-            for (let i = 0; i < products.length; i++) {
-          
+        var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
+          axios
+            .get(
+              "https://www.keykes.com/api/transcations/fetch/coupon/not-delivered",
+              {
+                headers: {
+                  "x-access-token": localStorage.getItem("token"),
+                },
+              }
+            )
+            .then(function (response) {
+              console.log(response);
+              const products = response.data.data;
+              var article = document.querySelector("tbody");
+              for (let i = 0; i < products.length; i++) {
+                var content = `
 
-              var content = `
-          
-          <tr>
-           
-            <td>${products[i].productName}</td>
-            <td>${products[i].coupon}</td>
-            <td>${products[i].userEmail}</td>
-           
-          
-        
+             <tr>
 
-           
+               <td>${products[i].productName}</td>
+               <td>${products[i].coupon}</td>
+               <td>${products[i].userEmail}</td>
 
-          </tr>
-   
-   `;
-              article.innerHTML += content;
-            }
-          });
+
+
+
+
+
+             </tr>
+
+      `;
+                article.innerHTML += content;
+              }
+            });
+        }
       }
     </script>
   </head>
@@ -129,12 +132,12 @@
               <a href="page-transactions-B.html">Paypal Transaction</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->
             </div>
-           
           </li>
           <li class="menu-item has-submenu">
-            <a class="menu-link" href="discount.html"> <i class="icon material-icons md-monetization_on"></i> 
-              <span class="text">Discount</span> 
-            </a> 
+            <a class="menu-link" href="discount.html">
+              <i class="icon material-icons md-monetization_on"></i>
+              <span class="text">Discount</span>
+            </a>
             <div class="submenu">
               <a href="discount.html">Discount 1</a>
               <!-- <a href="page-transactions-B.html">Transaction 2</a> -->

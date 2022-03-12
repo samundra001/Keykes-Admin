@@ -39,6 +39,13 @@ if(!params.tag  && !params.id){
   </script>
 
   <script>
+        function validateUser(){
+      var token = localStorage.getItem("token");
+      if(!token ){
+        window.location.replace("https://keykesadmin.netlify.app/index.html");
+      }
+    }
+
      function handleSubmit() {
 
          var coupon = document.getElementById("coupons").value
@@ -66,7 +73,7 @@ const params = Object.fromEntries(urlSearchParams.entries());
   </script>
 
 </head>
-<body>
+<body onload="validateUser()">
 
 <b class="screen-overlay"></b>
 

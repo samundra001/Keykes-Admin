@@ -84,6 +84,11 @@ let data = '<details>';
       }
 
       function handleRequest() {
+        var token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("https://keykesadmin.netlify.app/index.html");
+        } else {
+    
        
 var type = "PayPal"
         axios
@@ -143,6 +148,7 @@ let discountItem = discountArr[discountArr.length-1]
             }
             
           });
+      }
       }
       
     </script>

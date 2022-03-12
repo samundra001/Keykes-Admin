@@ -42,6 +42,13 @@
    function handleLogout(){
 		  localStorage.removeItem("token")
 	  }
+
+    function validateUser(){
+      var token = localStorage.getItem("token");
+      if(!token ){
+        window.location.replace("https://keykesadmin.netlify.app/index.html");
+      }
+    }
 </script>
 
 <script type="text/javascript">
@@ -71,7 +78,9 @@ var url = `https://www.keykes.com/api/products/create`
       });
   });
 </script>
-<body>
+
+
+<body onload="validateUser()">
 
 <b class="screen-overlay"></b>
 
